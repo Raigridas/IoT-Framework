@@ -1,0 +1,104 @@
+
+{% extends "template.html" %}
+{% block content %}
+
+ <div class="content-section">
+        <form method="post" action="">
+        {{ form.hidden_tag() }} <!-- adding a crosssite request forgery token -->
+        <fieldset class="form-group">
+            <legend class="border-bottom mb-4">Create an Instance</legend> <!-- display the legend specified in the routes.py -->
+
+            <div class="form-group">
+                {{ form.image_id.label(class="form-control-label") }}
+
+                {% if form.image_id.errors %} <!-- if the form had errors then print out this form and its errors -->
+                    {{ form.image_id(class="form-control form-control-lg is-invalid") }}
+                    <div class="invalid-feedback">
+                        {% for error in form.image_id.errors %}
+                            <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {{ form.image_id(class="form-control form-control-lg") }} <!-- if there are no errors then just print out as normal -->
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                {{ form.count.label(class="form-control-label") }}
+                {% if form.count.errors %} <!-- if the form had errors then print out this form and its errors -->
+                    {{ form.count(class="form-control form-control-lg is-invalid") }}
+                    <div class="invalid-feedback">
+                        {% for error in form.count.errors %}
+                            <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {{ form.count(class="form-control form-control-lg") }} <!-- if there are no errors then just print out as normal -->
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                {{ form.instance_type.label(class="form-control-label") }}
+                {% if form.instance_type.errors %} <!-- if the form had errors then print out this form and its errors -->
+                    {{ form.instance_type(class="form-control form-control-lg is-invalid") }}
+                    <div class="invalid-feedback">
+                        {% for error in form.instance_type.errors %}
+                            <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {{ form.instance_type(class="form-control form-control-lg") }} <!-- if there are no errors then just print out as normal -->
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                {{ form.key_name.label(class="form-control-label") }}
+                {% if form.key_name.errors %} <!-- if the form had errors then print out this form and its errors -->
+                    {{ form.key_name(class="form-control form-control-lg is-invalid") }}
+                    <div class="invalid-feedback">
+                        {% for error in form.key_name.errors %}
+                            <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {{ form.key_name(class="form-control form-control-lg") }} <!-- if there are no errors then just print out as normal -->
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                {{ form.commands.label(class="form-control-label") }}
+                {% if form.commands.errors %} <!-- if the form had errors then print out this form and its errors -->
+                    {{ form.commands(class="form-control form-control-lg is-invalid") }}
+                    <div class="invalid-feedback">
+                        {% for error in form.commands.errors %}
+                            <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {{ form.commands(class="form-control form-control-lg") }} <!-- if there are no errors then just print out as normal -->
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                {{ form.instance_info.label(class="form-control-label") }}
+                {% if form.instance_info.errors %} <!-- if the form had errors then print out this form and its errors -->
+                    {{ form.instance_info(class="form-control form-control-lg is-invalid") }}
+                    <div class="invalid-feedback">
+                        {% for error in form.instance_info.errors %}
+                            <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {{ form.instance_info(class="form-control form-control-lg") }} <!-- if there are no errors then just print out as normal -->
+                {% endif %}
+            </div>
+
+        </fieldset>
+            <div class="form-group">
+                {{ form.submit(class="btn btn-outline-info") }}
+            </div>
+        </form>
+    </div>
+
+ {% endblock %}
+
