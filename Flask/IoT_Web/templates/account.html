@@ -11,8 +11,6 @@
         </div>
       </div>
 
-        <!-- The same as register.html page with a few tweaks -->
-
         <form method="POST" action="" enctype="multipart/form-data">
             {{ form.hidden_tag() }}
             <fieldset class="form-group">
@@ -49,7 +47,7 @@
                     {{ form.picture(class="form-control-file") }} <!-- bootstrap class -->
                     {% if form.picture.errors %}
                         {% for error in form.picture.errors %}
-                            <span class="text-danger">{{ error }}</span></br> <!-- text-danger outlines the text in red color -->
+                            <span class="text-danger">{{ error }}</span> <!-- text-danger outlines the text in red color -->
                         {% endfor %}
                     {% endif %}
                 </div>

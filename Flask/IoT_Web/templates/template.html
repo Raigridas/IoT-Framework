@@ -31,7 +31,7 @@
 
             <!-- Navbar Right Side -->
             <div class="navbar-nav">
-                {% if current_user.is_authenticated %} <!-- if the user is logged in then display the logout menu -->
+                {% if current_user.is_authenticated %} <!-- if the user is logged in then display the logout menu, determines if the user is logged in -->
                     <!-- <a class="nav-item dropdown nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Options</a> Bootstrap Navbar Documentation -->
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <a class="dropdown-item" href="{{ url_for('create_instance') }}">Create Instance</a>
@@ -39,9 +39,11 @@
                     <a class="nav-item nav-link" href="{{ url_for('new_post') }}">New Post</a>
                     <a class="nav-item nav-link" href="{{ url_for('account') }}">Account</a>
                     <a class="nav-item nav-link" href="{{ url_for('logout') }}">Logout</a>
+                    {% if current_user.id == 1%}
+                    <a class="nav-item nav-link" href="{{ url_for('register') }}">Register</a>
+                    {% endif %}
                     {% else %} <!-- else show the normal menu -->
                   <a class="nav-item nav-link" href="{{ url_for('login') }}">Login</a>
-                  <a class="nav-item nav-link" href="{{ url_for('register') }}">Register</a>
                 {% endif %}
             </div>
           </div>
@@ -52,7 +54,7 @@
 <main role="main" class="container">
     <div class="row">
         <div class="col-md-8">
-            {% with message = get_flashed_messages(with_categories=true) %} <!-- Display flashed messages -->
+            {% with messages = get_flashed_messages(with_categories=true) %} <!-- Display flashed messages -->
                 {% if messages %} <!-- if messages are not empty and there are messages to display -->
                     {% for category, message in messages %} <!-- if there is a message then its located in messages -->
                         <div class="alert alert-{{ category }}">

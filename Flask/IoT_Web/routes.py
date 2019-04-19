@@ -7,7 +7,6 @@ from IoT_Web.forms import RegistrationForm, LoginForm, UpdateAccountForm, PostFo
 from IoT_Web.models import User, Post
 from flask_login import login_user, current_user, logout_user, login_required
 
-
 @app.route("/") #specifies the default page
 @app.route("/home")
 def home(): #when the user goes to the default page they will be representded with the home page if they go to the login or register page
@@ -20,9 +19,8 @@ def about():
     return render_template('about.html')
 
 @app.route("/register", methods=['GET', 'POST'])
+@login_required
 def register():
-    if current_user.is_authenticated: #if the current user is authenticated then redirect them to the home page if they go to the login or register page
-        return redirect(url_for('home'))
     form = RegistrationForm()
     if form.validate_on_submit(): #after submiting a register form
         hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8') #hash the password and decode it into string
@@ -30,7 +28,7 @@ def register():
         db.session.add(user) #adding new user to the database
         db.session.commit() #commiting this change to the database
         flash('Your account was successfully created', 'success') #show message Account created for + username of the account created if successful (success category)
-        return redirect(url_for('login')) #after successfully creating an account redirect the user to the home page
+        return redirect(url_for('login')) #after successfully creating an account redirect the user to the login page
     return render_template('register.html', form=form)
 
 @app.route("/login", methods=['GET', 'POST'])
@@ -138,6 +136,3 @@ def create_instance():
     form = CreateIntance()
     return render_template('create_instance.html', form=form)
 
-@app.route("/scan")
-def scan():
-    return render_template('scan.html')

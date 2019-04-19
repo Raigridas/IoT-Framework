@@ -1,12 +1,20 @@
+import os
 from datetime import datetime
-from IoT_Web import db, login_manager #imports db = SQLAlchemy(app) from __init__.py file to create a db
+from IoT_Web import db, login_manager, app, bcrypt #imports db = SQLAlchemy(app) from __init__.py file to create a db
 from flask_login import UserMixin #UserMixin is a class that contains the following attributes IsAuthenticated, IsActive, IsAnonymous, GetId
+
+from flask_admin import Admin
+from IoT_Web.admin import AdminView
+from sqlalchemy.ext.hybrid import hybrid_property
 
 @login_manager.user_loader
 def load_user(user_id): #reloads the users from the user id stored in a session
     return User.query.get(int(user_id)) #returns the user for that id
 
 class User(db.Model, UserMixin):
+
+    __tablename__ = 'user'
+
     id = db.Column(db.Integer, primary_key=True) #id type integer, primary_key = unique id for users
     username = db.Column(db.String(20), unique=True, nullable=False) #username type string with max length of 20 characters, unique usernames, nullable = must have a username
     email = db.Column(db.String(120), unique=True, nullable=False) #email type strnng with max length of 120 characters, unique emails, must have an email
@@ -14,10 +22,27 @@ class User(db.Model, UserMixin):
     password = db.Column(db.String(60), nullable=False) #hash password 60 chars in length
     posts = db.relationship('Post', backref='author', lazy=True)
 
+
+    # # _password = db.Column(db.Binary)
+    # password = db.Column(db.Binary)
+    # _salt = db.Column(db.Binary, default=os.urandom(20))
+    #
+    # @hybrid_property
+    # def password (self):
+    #     return self.password
+    #
+    # @password.setter
+    # def password(self, new_pass):
+    #     new_password_hash = bcrypt.generate_password_hash(new_pass, self._salt).decode('utf-8')
+    #     self.password = new_password_hash
+
     def __repr__(self): #__repr__ method defines how the objects are printed out
         return f"User('{self.username}', '{self.email}', '{self.image_file}')" #order in which objects are printed out
 
 class Post(db.Model):
+
+    __tablename__ = 'post'
+
     id = db.Column(db.Integer, primary_key=True) #id type integer, primary_key = unique id for users
     title = db.Column(db.String(100), nullable=False)
     date_posted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow) #if no date specified use todays date
@@ -26,3 +51,8 @@ class Post(db.Model):
 
     def __repr__(self): #__repr__ method defines how the objects are printed out
         return f"Post('{self.title}', '{self.date_posted}')" #order in which objects are printed out
+
+
+admin = Admin(app, name='Admin Page', index_view=AdminView(User, db.session, url='/admin', endpoint='admin'))
+admin.add_view(AdminView(User, db.session))
+admin.add_view(AdminView(Post, db.session))
